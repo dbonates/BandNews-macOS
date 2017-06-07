@@ -14,6 +14,7 @@ import AVKit
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    var helpInfo =  "• Click to turn on/off\n• ⎇ + Click to open radio list\n• Control + Click to quit)"
     var isRadioOn = false {
         didSet {
             if isRadioOn {
@@ -36,8 +37,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let icon = NSImage(named: "radio")
         statusItem.image = icon
         statusItem.highlightMode = false
-        statusItem.toolTip = "• click to turn on/off\n• alt+click to quit ;)"
-        statusItem.action = #selector(printQuote(sender:))
+        statusItem.toolTip = helpInfo
+        statusItem.action = #selector(radioAction(sender:))
         
         eventMonitor = EventMonitor(mask: .leftMouseDown) { [unowned self] event in
             if self.popover.isShown {
@@ -49,20 +50,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         getStreamInfo(for: 3)
     }
 
-    func printQuote(sender: AnyObject) {
+    func radioAction(sender: Any) {
         
-        
-        if let wannaQuit = NSApplication.shared().currentEvent?.modifierFlags.contains(.option), wannaQuit {
-            player.pause()
-            NSApplication.shared().terminate(self)
-            return
-        }
-        
-        if let wannaRadioList = NSApplication.shared().currentEvent?.modifierFlags.contains(.control), wannaRadioList {
+        if let wannaRadioList = NSApplication.shared().currentEvent?.modifierFlags.contains(.option), wannaRadioList {
             openStationsList()
             return
         }
         
+        
+        if let wannaQuit = NSApplication.shared().currentEvent?.modifierFlags.contains(.control), wannaQuit {
+            player.pause()
+            NSApplication.shared().terminate(self)
+            return
+        }
+
         
         isRadioOn = !isRadioOn
         statusItem.image = isRadioOn ? NSImage(named: "radio-on") : NSImage(named: "radio")
@@ -94,9 +95,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let sb = NSStoryboard(name: "Main", bundle: nil)
         let stationsViewController = sb.instantiateController(withIdentifier: "RadioListViewController") as! RadioListViewController
-//        if let cs = currentStream {
-//            stationsViewController.currentStreamId = cs.id
-//        }
+        if let cs = currentStream {
+            stationsViewController.currentStreamId = cs.id
+        }
         stationsViewController.stations = stations
         stationsViewController.delegate = self
         
@@ -137,7 +138,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         player.replaceCurrentItem(with: newStreamItem)
         
         if let cs = self.currentStream {
-            statusItem.toolTip = "• click to turn on/off\n• alt+click to quit\n• Playing \(cs.name)"
+            let playingInfo = "• Playing \(cs.name)"
+            statusItem.toolTip = helpInfo + "\n\(String(repeating: "-", count: playingInfo.characters.count))\n\(playingInfo)"
         }
     }
 }
