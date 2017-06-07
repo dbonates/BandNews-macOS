@@ -8,16 +8,17 @@ A tiny macOS statusBar app for BandNews Radio ;)
 - An enought tooltip with these commands and info about current radio
 
 ## shots
-_radio is ON:_
+_radio is ON:_ <br />
 ![Icon when radio is ON](imgs/radio_on.png) 
 
-_radio is OFF:_
+
+_radio is OFF:_ <br />
 ![Icon when radio is OFF](imgs/radio_on.png)
 
-_listing available radios:_
+_listing available radios:_ <br />
 ![List of radios](imgs/radio_list.png)
 
-_tooltip helper:_
+_tooltip helper:_ <br />
 ![Tooltip with status and commands](imgs/tooltip_help.png)
 
 ## Download
