@@ -24,9 +24,7 @@ class RadioListViewController: NSViewController, NSTableViewDataSource, NSTableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.white.cgColor
+        
         tableView.dataSource = self
         tableView.delegate = self
     }
