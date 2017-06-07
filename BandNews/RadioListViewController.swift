@@ -22,6 +22,8 @@ class RadioListViewController: NSViewController, NSTableViewDataSource, NSTableV
         }
     }
     
+    var currentStreamId: Int = -1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -43,6 +45,14 @@ class RadioListViewController: NSViewController, NSTableViewDataSource, NSTableV
         }
         
         return nil
+    }
+    
+    func tableView(_ tableView: NSTableView, willDisplayCell cell: Any, for tableColumn: NSTableColumn?, row: Int) {
+        
+        guard let cell = cell as? NSTextFieldCell else { return }
+        if stations[row].id == currentStreamId {
+            cell.textColor = .red
+        }
     }
     
     func tableViewSelectionDidChange(_ notification: Notification) {

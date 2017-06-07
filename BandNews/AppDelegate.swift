@@ -24,10 +24,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
-    let player = AVPlayer(url: URL(string: "http://evp.mm.uol.com.br:1935/bnewsfm_rj/bnewsfm_rj.sdp/playlist.m3u8")!)
+    let player = AVPlayer()
     
     let popover = NSPopover()
     var eventMonitor: EventMonitor?
+    
+    var currentStream: Stream?
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
@@ -44,6 +46,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         eventMonitor?.start()
         
+        getStreamInfo(for: 3)
     }
 
     func printQuote(sender: AnyObject) {
@@ -91,7 +94,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let sb = NSStoryboard(name: "Main", bundle: nil)
         let stationsViewController = sb.instantiateController(withIdentifier: "RadioListViewController") as! RadioListViewController
-        
+//        if let cs = currentStream {
+//            stationsViewController.currentStreamId = cs.id
+//        }
         stationsViewController.stations = stations
         stationsViewController.delegate = self
         
@@ -105,7 +110,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func selectRadio(_ station: Station) {
         print("loadURL for id: \(station.id)")
+        getStreamInfo(for: station.id)
         closePopup()
+        
+        
+    }
+    
+    func getStreamInfo(for id: Int) {
+        let streamUrlPath = "http://webservice.bandradios.onebrasilmedia.com.br:8087/bandradios-api/retrieve-radio?1=1&rid=\(id)&auc=29E2A48D-BDD2-4589-9710-18A446A19B83"
+        
+        guard let streamUrl = URL(string: streamUrlPath) else { return }
+        
+        DataCache().getStreamInfo(for: streamUrl, id: id) { streamInfo in
+            guard let streamInfo = streamInfo else { return }
+            DispatchQueue.main.async {
+                self.setupStream(streamInfo)
+            }
+        }
+    }
+    
+    func setupStream(_ streamInfo: Stream) {
+        
+        self.currentStream = streamInfo
+        guard let streamUrl = URL(string: streamInfo.path) else { return }
+        let newStreamItem = AVPlayerItem(url: streamUrl)
+        player.replaceCurrentItem(with: newStreamItem)
+        
+        if let cs = self.currentStream {
+            statusItem.toolTip = "• click to turn on/off\n• alt+click to quit\n• Playing \(cs.name)"
+        }
     }
 }
 
