@@ -14,7 +14,7 @@ import AVKit
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    var helpInfo =  "• Click to turn on/off\n• ⎇ + Click to open radio list\n• Control + Click to quit)"
+    var helpInfo =  "• Click to turn on/off\n• ⎇ + Click to open radio list\n• Control + Click to quit"
     var isRadioOn = false {
         didSet {
             if isRadioOn {

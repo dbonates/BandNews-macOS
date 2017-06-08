@@ -13,7 +13,7 @@ _radio is ON:_ <br />
 
 
 _radio is OFF:_ <br />
-![Icon when radio is OFF](imgs/radio_on.png)
+![Icon when radio is OFF](imgs/radio_off.png)
 
 _listing available radios:_ <br />
 ![List of radios](imgs/radio_list.png)
