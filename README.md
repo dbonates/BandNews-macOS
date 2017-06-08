@@ -22,6 +22,6 @@ _tooltip helper:_ <br />
 ![Tooltip with status and commands](imgs/tooltip_help.png)
 
 ## Download
-You can download the latest release [here](https://github.com/dbonates/BandNewsMac/releases/download/v1.0/BandNews_1.0.zip).
+You can download the latest release [here](https://github.com/dbonates/BandNews-macOS/releases/download/v1.0/BandNews_1.0.1.zip).
 
 
