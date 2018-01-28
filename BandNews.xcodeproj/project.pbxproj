@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E823AC9E201D45D1007BC6C9 /* extraradios.json in Resources */ = {isa = PBXBuildFile; fileRef = E823AC9D201D45D1007BC6C9 /* extraradios.json */; };
 		E8FF01CA1EE6FD33009120D9 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FF01C91EE6FD33009120D9 /* EventMonitor.swift */; };
 		E8FF01CC1EE7045A009120D9 /* Station.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FF01CB1EE7045A009120D9 /* Station.swift */; };
 		E8FF01D01EE7060D009120D9 /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FF01CD1EE7060D009120D9 /* DataCache.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E823AC9D201D45D1007BC6C9 /* extraradios.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = extraradios.json; sourceTree = "<group>"; };
 		E8FF01C91EE6FD33009120D9 /* EventMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		E8FF01CB1EE7045A009120D9 /* Station.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Station.swift; sourceTree = "<group>"; };
 		E8FF01CD1EE7060D009120D9 /* DataCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCache.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				E8FF01CD1EE7060D009120D9 /* DataCache.swift */,
 				E8FF01CE1EE7060D009120D9 /* DataService.swift */,
 				E8FF01CF1EE7060D009120D9 /* Stream.swift */,
+				E823AC9D201D45D1007BC6C9 /* extraradios.json */,
 				E8FFDB621EE6D77600DFD9FD /* Assets.xcassets */,
 				E8FFDB641EE6D77600DFD9FD /* Main.storyboard */,
 				E8FFDB671EE6D77600DFD9FD /* Info.plist */,
@@ -141,6 +144,7 @@
 			files = (
 				E8FFDB631EE6D77600DFD9FD /* Assets.xcassets in Resources */,
 				E8FFDB661EE6D77600DFD9FD /* Main.storyboard in Resources */,
+				E823AC9E201D45D1007BC6C9 /* extraradios.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,13 +8,14 @@
 
 import Foundation
 
-struct Station {
+struct Station: Codable {
     let id: Int
     let name: String
     let logoURL: URL
     let thumbnailURL: URL
     let cityName: String
     let stateName: String
+    var streamingURL: URL? = nil
 }
 
 extension Station {
@@ -38,5 +39,6 @@ extension Station {
         self.thumbnailURL = thumbnailURL
         self.cityName = cityName
         self.stateName = stateName
+        self.streamingURL = nil
     }
 }

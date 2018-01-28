@@ -1,0 +1,22 @@
+
+[
+ {
+ "thumbnailURL": "http://itapemafm.clicrbs.com.br/wp-content/themes/theme-itapema-site/img/default.jpgg",
+ "stateName": "Santa Catarina",
+ "id": -2,
+ "logoURL": "http://itapemafm.clicrbs.com.br/wp-content/themes/theme-itapema-site/img/default.jpg",
+ "streamingURL": "http://132747t.lp.azioncdn.net/2747t/a/mp4:access_options/rtmp-live/ita_fln.sdp/playlist.m3u8?wowzasessionid=2111057910",
+ "cityName": "Florianópolis",
+ "name": "Radio Itampema Florianópolis"
+ },
+ {
+    "thumbnailURL": "http://radiosergiolopes.com/images/b4eec8a4096e6d7428ce3448a5352702.png",
+    "stateName": "Rio de Janeiro",
+    "id": -1,
+    "logoURL": "http://radiosergiolopes.com/images/b4eec8a4096e6d7428ce3448a5352702.png",
+    "streamingURL": "http://streaming03.hstbr.net:8162/live",
+    "cityName": "Rio de Janeiro",
+    "name": "Radio Sérgio Lopes"
+}
+ ]
+

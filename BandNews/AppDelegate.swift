@@ -11,9 +11,12 @@ import Cocoa
 import MediaPlayer
 import AVKit
 
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+    let kSavedStation = "savedStation"
+    
     var helpInfo =  "• Click to turn on/off\n• ⎇ + Click to open radio list\n• Control + Click to quit"
     var isRadioOn = false {
         didSet {
@@ -31,6 +34,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var eventMonitor: EventMonitor?
     
     var currentStream: Stream?
+    var currentStation: Station? {
+        didSet {
+            saveCurrentStation()
+        }
+    }
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         
@@ -47,9 +55,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         eventMonitor?.start()
         
-        getStreamInfo(for: 3)
+        if let savedStation = getSavedStation() {
+            selectRadio(savedStation)
+        }
     }
 
+    func getSavedStation() -> Station? {
+        
+        if let data = UserDefaults.standard.value(forKey:kSavedStation) as? Data {
+            return try? PropertyListDecoder().decode(Station.self, from: data)
+        }
+        
+        return nil
+    }
+    
+    func saveCurrentStation() {
+        guard let currentStation = self.currentStation else {
+            print("nothing to persist")
+            return
+        }
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(currentStation), forKey: kSavedStation)
+        UserDefaults.standard.synchronize()
+    }
+    
     func radioAction(sender: Any) {
         
         if let wannaRadioList = NSApplication.shared().currentEvent?.modifierFlags.contains(.option), wannaRadioList {
@@ -82,9 +110,60 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         DataCache().getRadioList(from: url, completion: { stations in
             guard let stations = stations else { return }
             DispatchQueue.main.async {
-                self.showStationsList(with: stations)
+                
+                
+                let hackedStations = self.addExtraRadios(to: stations)
+                self.showStationsList(with: hackedStations)
             }
         })
+    }
+    
+    func addExtraRadios(to stations: [Station]) -> [Station] {
+        
+        var result = stations
+        
+        guard
+            let extraRadiosPath = Bundle.main.path(forResource: "extraradios", ofType: "json")
+            else {
+        
+                print("uops1")
+                return stations
+        
+        }
+        guard
+            let extraRadiosURL = URL(string: "file:///\(extraRadiosPath)")
+            else {
+                
+                print("uops2")
+                return stations
+                
+        }
+        guard
+            let extraRadiosData = try? Data.init(contentsOf: extraRadiosURL)
+            else {
+                
+                print("uops3")
+                return stations
+                
+        }
+        
+        let decoder = JSONDecoder()
+        
+        do {
+            let extraRadios = try decoder.decode([Station].self, from: extraRadiosData)
+            
+            for radio in extraRadios {
+                result.insert(radio, at: 0)
+            }
+            
+            return result
+            
+        } catch let error {
+            print(error.localizedDescription)
+            return stations
+        }
+        
+        
     }
     
     func showStationsList(with stations: [Station]) {
@@ -111,7 +190,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func selectRadio(_ station: Station) {
         print("loadURL for id: \(station.id)")
-        getStreamInfo(for: station.id)
+        self.currentStation = station
+        
+        if station.id < 0 {
+            let stream = Stream(id: station.id, path: station.streamingURL!.absoluteString, name: "Rádio Sergio Lopes")
+            setupStream(stream)
+        } else {
+            getStreamInfo(for: station.id)
+        }
         closePopup()
         
         
@@ -136,10 +222,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         guard let streamUrl = URL(string: streamInfo.path) else { return }
         let newStreamItem = AVPlayerItem(url: streamUrl)
         player.replaceCurrentItem(with: newStreamItem)
-        
         if let cs = self.currentStream {
             let playingInfo = "• Playing \(cs.name)"
-            statusItem.toolTip = helpInfo + "\n\(String(repeating: "-", count: playingInfo.characters.count))\n\(playingInfo)"
+            statusItem.toolTip = helpInfo + "\n\(String(repeating: "-", count: playingInfo.count))\n\(playingInfo)"
         }
     }
 }
